@@ -1,0 +1,88 @@
+1. Ensure you have NASM:
+    -Check here: C:\Program Files\NASM
+    -If it doesn't exist, then you need to download it
+    DOWNLOAD:
+    -https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/win64/
+    -Download exe
+    -Run file as Admin
+    -Install system wide
+
+2. Ensure NASM is in path:
+    -Open cmd prompt
+    -Type in: nasm
+    -Expected output:
+    nasm: error: no input file specified
+    type `nasm -h' for help
+
+    -If you don't see that, you need to set path
+    -Click windows button (or key), type in path and press enter
+    -Under "User variables for <user>":
+    -Click path, then edit
+    -Click new, and paste the path to nasm dir (Should be:  C:\Program Files\NASM)
+    -Ensure all command prompts are closed
+    -Open a new command prompt and run "nasm" again. 
+
+3. Setting up a Visual Studio Project to build with NASM
+    CREATING FILES
+    -Create a new Empty Project
+    -Create a new cpp file called "main.cpp"
+    -Create another new cpp file, this file will be for NASM code. Name it after whatever exercise we are on. EX:
+    --If you are on Monday.... name this new file "monday.nasm"
+    --Yes, even though we built it as a cpp file... as long as we change the extension it'll be a .nasm
+    -Copy and paste code from repo into files created (you only need the cpp and nasm code)
+
+    SETTING NASM BUILD
+    -Right click the nasm file -> properties -> General
+    -Set Item Type to: Custom Build Tool
+    -Set "Excluded From Built" to No
+    -Click Apply
+    -Click Custom Build Tool on the left hand pane
+    -Set command line to: nasm -f win32 -g monday.nasm (or whatever day)
+    -Set Outputs to: monday.obj (or whatever day)
+    -Click Apply
+    
+    SETTING PROJECT FOR NASM COMPILE
+    -Right click project (not solution) -> Build Dependencies -> Build Custimizations
+    -Tick MASM and select ok
+
+4. Building and Debugging
+    Build
+    -To build, you will build it like any other visual studio project, just click f5
+
+    Verifying Output
+    -To verify, you will need to place a breakpoint. There are a ton of places this can be set, let's walk through an example. 
+    -If we wanted to check Mondays first function... 
+    -Open main.cpp
+    -Set a breakpoint AFTER the first function. (in this case, after line ~227 test_unpack_string)
+    -The purpose of this is to allow test_unpack_string, which is a call to the NASM function you will build, to run then break and pause
+     so that we can see the output. 
+    -You may notice that other functions are commented out, just remove the // to bring them back into play and build. Same applies, if you want to test 
+     all three functions, just place a break point on line 230 and ensure all functions are uncommented
+
+     Debugging
+     -You have a couple opitions here... but for the sake of this demo... we will be using Visual Studio.
+     -Let's assume we want to debug test_unpack_string. 
+     -First step is setting proper breakpoints... we will be setting a few of them
+     -First breakpoint we will set is within main.cpp... set one before the call to test_unpack_string ~line 226
+     -Click build-run
+     -Step into test_unpack_string
+     -On about line 176... you will see the actual call to unpack_string (the nasm function)
+     -Put a break before that and press continue (roughly line 175)
+     -This will allow us to skip the loop which would have ran 20 times or so
+     -We should now be on line 175... step over this so that we do not enter PRINT_BEGIN
+     -Now we are hovering over the unpack_string function that is built in the nasm file... 
+     -Right click that line of code and click "Go to Dissaembly"
+     -A few lines down in the asm, you should see a call to _unpack_string@12... step to it and step in
+     -At this point, we are now on the code that we wrote in the nasm file. 
+     -You can open windows like registers, stack, mem, etc by going to Debug -> Windows
+     -From here, step and observe what happens.
+    
+
+
+
+
+
+
+KNOWN ISSUES:
+- If you install and set path for NASM while Visual Studio is open... it will not build. You need to restart visual studio.
+    

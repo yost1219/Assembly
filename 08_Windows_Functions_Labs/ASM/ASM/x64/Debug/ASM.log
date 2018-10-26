@@ -1,0 +1,9 @@
+﻿  main.cpp
+c:\users\curriculum dev\desktop\assembly 2017 - 1\labs\winfunctions\asm\asm\main.cpp(25): warning C4838: conversion from 'int' to 'unsigned char' requires a narrowing conversion
+c:\users\curriculum dev\desktop\assembly 2017 - 1\labs\winfunctions\asm\asm\main.cpp(25): warning C4305: 'initializing': truncation from 'int' to 'unsigned char'
+c:\users\curriculum dev\desktop\assembly 2017 - 1\labs\winfunctions\asm\asm\main.cpp(25): warning C4309: 'initializing': truncation of constant value
+main.obj : error LNK2019: unresolved external symbol first_func referenced in function "void __cdecl first_test(void)" (?first_test@@YAXXZ)
+main.obj : error LNK2019: unresolved external symbol second_func referenced in function "void __cdecl second_test(void)" (?second_test@@YAXXZ)
+main.obj : error LNK2019: unresolved external symbol third_func referenced in function "void __cdecl third_test(void)" (?third_test@@YAXXZ)
+main.obj : error LNK2019: unresolved external symbol fourth_func referenced in function "void __cdecl fourth_test(void)" (?fourth_test@@YAXXZ)
+C:\Users\Curriculum Dev\Desktop\Assembly 2017 - 1\labs\WinFunctions\ASM\x64\Debug\ASM.exe : fatal error LNK1120: 4 unresolved externals
