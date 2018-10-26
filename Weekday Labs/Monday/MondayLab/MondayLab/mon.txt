@@ -1,0 +1,285 @@
+bits 32
+
+global _unpack_string@12, @walk_list@8, _call_function
+
+section .text
+
+
+_unpack_string@12:
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	This function takes three params:
+;
+;  Param 1: A string of unsigned characters, all of which have been left
+;  shifted 1 bit
+;
+;  Param 2: An empty, NULL-terminated character string
+;
+;  Param 3: A size indicating the number of bytes each string can hold.
+;
+;  This function simply needs to:
+;	1.) Walk the first string, loading each byte
+;	2.) Right-shift the value retrieved
+;	3.) Store the result in the destination string
+;
+;	void __stdcall unpack_string(unsigned char* input, char* output, size_t length);
+;
+; BEGIN STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;arguments passed via register (6): edi, esi, edx, ecx, ebx, eax
+
+xor eax, eax			;clear registers
+xor ebx, ebx
+xor ecx, ecx
+xor edx, edx
+xor edi, edi
+
+mov esi, [esp+4]		;left shifted string
+mov edi, [esp+8]		;empty string
+mov ecx, [esp+12]		;strlen
+
+.loop:
+  lodsb					;load esi into eax
+  shr eax, 1			;shift right 1
+  stosb					;store eax into edi
+  inc ebx				;increment counter
+  cmp ebx, ecx			;have you reached strlen?
+  jne .loop
+
+ret 12
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; END STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+struc Node
+	.Next	resd  1
+	.Data	resd  1
+endstruc
+
+@walk_list@8:
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	This function takes 2 parameters:
+;	
+;	Param 1: A pointer to the beginning of a linked list of nodes (
+;   structure definition given above), which is NULL-terminated (e.g., the
+;   last Next pointer is NULL).
+;
+;	Param 2: A needle to search for within the list.
+;
+;	Walk the list, searching each Node for the needle (in Node.Data), and either:
+;	1.) Return the node where you found the value
+;	2.) Return NULL if the value cannot be found
+;
+;   Node* __fastcall walk_list(Node* start, size_t needle);
+;
+;	HINTS:
+;	-Notice the struc Node on line 46
+;	-Think back to these Nodes... what are they? 
+;	-Take a look at main.cpp and note which is the next node
+;	-Remember... the next sequential address you need is given to you... this isn't like itterating through arrays
+;
+; BEGIN STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+xor eax, eax				;clear registers
+xor edi, edi
+xor esi, esi
+
+mov edi, [ecx]				;node
+
+.loop:
+  mov esi, [edi+Node.Data]	;current node data
+  cmp esi, edx				;is current node what you're looking for?
+  je .found					;found target
+  mov edi, [edi+Node.Next]	;not yet found
+  cmp edi, 0				;is next node null?
+  je .end					;if yes go to end
+  jmp .loop	
+
+.found:
+  mov eax, edi				;mark position into return
+
+.end:
+  ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; END STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+extern _first_func@0
+extern _test_func
+
+_call_function:
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;	This function takes no parameters.
+;
+; Using the two extern'd in functions (above):
+;
+;	_first_func@0 -> int __stdcall first_func();
+;	_test_func -> int __cdecl test_func(int);
+;
+;	1.) Call _first_func@0
+;	2.) Take the result from the first function call,
+;	and pass it as a parameter to _test_func
+;	3.) Return the result.
+;
+;	 int __cdecl call_function();
+;	
+; BEGIN STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+xor eax, eax			;clear register
+
+call _first_func@0
+push eax
+
+call _test_func
+pop ebx
+
+ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; END STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+=====================================================================================
+
+bits 32
+
+global _unpack_string@12, @walk_list@8, _call_function
+
+section .text
+
+
+_unpack_string@12:
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	This function takes three params:
+;
+;  Param 1: A string of unsigned characters, all of which have been left
+;  shifted 1 bit
+;
+;  Param 2: An empty, NULL-terminated character string
+;
+;  Param 3: A size indicating the number of bytes each string can hold.
+;
+;  This function simply needs to:
+;	1.) Walk the first string, loading each byte
+;	2.) Right-shift the value retrieved
+;	3.) Store the result in the destination string
+;
+;	void __stdcall unpack_string(unsigned char* input, char* output, size_t length);
+;
+; BEGIN STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;arguments passed via register (6): edi, esi, edx, ecx, ebx, eax
+
+xor eax, eax			;clear registers
+xor ebx, ebx
+xor ecx, ecx
+xor edx, edx
+xor edi, edi
+
+mov esi, [esp+4]		;left shifted string
+mov edi, [esp+8]		;empty string
+mov ecx, [esp+12]		;strlen
+
+.loop:
+  lodsb					;load esi into eax
+  shr eax, 1			;shift right 1
+  stosb					;store eax into edi
+  inc ebx				;increment counter
+  cmp ebx, ecx			;have you reached strlen?
+  jne .loop
+
+ret 12
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; END STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+struc Node
+	.Next	resd  1
+	.Data	resd  1
+endstruc
+
+@walk_list@8:
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	This function takes 2 parameters:
+;	
+;	Param 1: A pointer to the beginning of a linked list of nodes (
+;   structure definition given above), which is NULL-terminated (e.g., the
+;   last Next pointer is NULL).
+;
+;	Param 2: A needle to search for within the list.
+;
+;	Walk the list, searching each Node for the needle (in Node.Data), and either:
+;	1.) Return the node where you found the value
+;	2.) Return NULL if the value cannot be found
+;
+;   Node* __fastcall walk_list(Node* start, size_t needle);
+;
+;	HINTS:
+;	-Notice the struc Node on line 46
+;	-Think back to these Nodes... what are they? 
+;	-Take a look at main.cpp and note which is the next node
+;	-Remember... the next sequential address you need is given to you... this isn't like itterating through arrays
+;
+; BEGIN STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+xor eax, eax				;clear registers
+xor edi, edi
+xor esi, esi
+
+mov edi, [ecx]				;node
+
+.loop:
+  mov esi, [edi+Node.Data]	;current node data
+  cmp esi, edx				;is current node what you're looking for?
+  je .found					;found target
+  mov edi, [edi+Node.Next]	;not yet found
+  cmp edi, 0				;is next node null?
+  je .end					;if yes go to end
+  jmp .loop	
+
+.found:
+  mov eax, edi				;mark position into return
+
+.end:
+  ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; END STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+extern _first_func@0
+extern _test_func
+
+_call_function:
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;	This function takes no parameters.
+;
+; Using the two extern'd in functions (above):
+;
+;	_first_func@0 -> int __stdcall first_func();
+;	_test_func -> int __cdecl test_func(int);
+;
+;	1.) Call _first_func@0
+;	2.) Take the result from the first function call,
+;	and pass it as a parameter to _test_func
+;	3.) Return the result.
+;
+;	 int __cdecl call_function();
+;	
+; BEGIN STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+xor eax, eax			;clear register
+
+call _first_func@0
+push eax
+
+call _test_func
+pop ebx
+
+ret
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+; END STUDENT CODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;

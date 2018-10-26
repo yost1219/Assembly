@@ -1,0 +1,10 @@
+﻿  main.cpp
+c:\users\student\source\repos\assembly\weekday labs\tuesday\tuesday\main.cpp(35): warning C4018: '<': signed/unsigned mismatch
+  c:\users\student\source\repos\assembly\weekday labs\tuesday\tuesday\main.cpp(80): note: see reference to function template instantiation 'void compare_vals<char>(T *,T *,size_t)' being compiled
+          with
+          [
+              T=char
+          ]
+main.obj : error LNK2019: unresolved external symbol _copy_string referenced in function "void __cdecl test_copy_string(void)" (?test_copy_string@@YAXXZ)
+main.obj : error LNK2019: unresolved external symbol _get_cpu_string@4 referenced in function "void __cdecl test_get_cpu_string(void)" (?test_get_cpu_string@@YAXXZ)
+C:\Users\Student\Source\Repos\Assembly\Weekday Labs\Tuesday\Debug\Tuesday.exe : fatal error LNK1120: 2 unresolved externals
